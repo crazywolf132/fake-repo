@@ -5,8 +5,9 @@ const { requestLogger } = require('./middleware/logging');
 const { errorHandler } = require('./middleware/errorHandler');
 const PORT = process.env.PORT || 3000;
 
-// Global array that was causing memory leak
-let requestHistory = [];
+// Fixed: Using a circular buffer with max size
+const CircularBuffer = require('./utils/CircularBuffer');
+const requestHistory = new CircularBuffer(1000);
 
 app.get('/', (req, res) => {
   res.send('Welcome to our API!');
