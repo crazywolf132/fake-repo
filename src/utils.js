@@ -1,7 +1,12 @@
 // Utility functions
 
 function formatDate(date) {
-  return new Date(date).toISOString();
+  // Modified format for user-friendly display
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 }
 
 function calculateSum(arr) {
