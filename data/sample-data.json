@@ -1,0 +1,23 @@
+{
+  "users": [
+    {"id": 1, "name": "John Doe", "email": "john@example.com", "active": true},
+    {"id": 2, "name": "Jane Smith", "email": "jane@example.com", "active": true},
+    {"id": 3, "name": "Bob Johnson", "email": "bob@example.com", "active": false},
+    {"id": 4, "name": "Alice Brown", "email": "alice@example.com", "active": true},
+    {"id": 5, "name": "Charlie Wilson", "email": "charlie@example.com", "active": true}
+  ],
+  "products": [
+    {"id": 101, "name": "Laptop", "price": 999.99, "stock": 15},
+    {"id": 102, "name": "Mouse", "price": 29.99, "stock": 150},
+    {"id": 103, "name": "Keyboard", "price": 79.99, "stock": 85},
+    {"id": 104, "name": "Monitor", "price": 299.99, "stock": 32},
+    {"id": 105, "name": "Headphones", "price": 149.99, "stock": 67}
+  ],
+  "orders": [
+    {"id": 1001, "userId": 1, "productId": 101, "quantity": 1, "date": "2024-01-15"},
+    {"id": 1002, "userId": 2, "productId": 102, "quantity": 2, "date": "2024-01-16"},
+    {"id": 1003, "userId": 1, "productId": 103, "quantity": 1, "date": "2024-01-17"},
+    {"id": 1004, "userId": 3, "productId": 104, "quantity": 1, "date": "2024-01-18"},
+    {"id": 1005, "userId": 4, "productId": 105, "quantity": 3, "date": "2024-01-19"}
+  ]
+}
