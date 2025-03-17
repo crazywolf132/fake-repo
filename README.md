@@ -113,21 +113,57 @@ Test your tool's ability to:
 └── tests/              # Test files
 ```
 
+## Branch Tree Structure
+
+```
+main (current)
+│
+├─ Already Merged:
+│  ├─ hotfix/security-patch → merged at commit 2848c2c
+│  └─ feature/database → partially merged at db86cf6
+│
+└─ Active Branches:
+   │
+   ├─ From early history (main~10):
+   │  ├─ feature/user-auth
+   │  │  └─ feature/user-auth-api [STACKED]
+   │  └─ feature/refactor-old
+   │
+   ├─ From feature/database merge (main~6):
+   │  ├─ feature/database (continues after merge)
+   │  │  └─ feature/database-models [STACKED]
+   │  └─ bugfix/memory-leak
+   │
+   ├─ From after hotfix (main~4):
+   │  └─ feature/experimental
+   │
+   ├─ From commit 4fbcc2f (main~3):
+   │  ├─ feature/api-v2 (includes merge from release/v2.0)
+   │  │  └─ feature/api-v2-routes [STACKED]
+   │  └─ release/v2.0
+   │
+   └─ From recent main:
+      └─ feature/long-running
+
+ORPHAN: gh-pages (no common ancestor with main)
+```
+
 ## Branch Descriptions
 
 - **main**: Primary development branch
-- **feature/user-auth**: Authentication implementation
-- **feature/user-auth-api**: API routes for authentication (nested)
-- **feature/database**: Database integration
-- **feature/database-models**: Mongoose models (nested)
-- **feature/api-v2**: Version 2 API development
-- **feature/api-v2-routes**: API v2 routes (nested)
-- **feature/experimental**: Experimental features
-- **feature/long-running**: Long-term feature development
+- **feature/user-auth**: Authentication implementation (branched from early main)
+- **feature/user-auth-api**: API routes for authentication [STACKED on feature/user-auth]
+- **feature/database**: Database integration (partially merged, continues development)
+- **feature/database-models**: Mongoose models [STACKED on feature/database]
+- **feature/api-v2**: Version 2 API development (includes release/v2.0 merge)
+- **feature/api-v2-routes**: API v2 routes [STACKED on feature/api-v2]
+- **feature/experimental**: Experimental caching features
+- **feature/long-running**: Performance metrics implementation
+- **feature/refactor-old**: Legacy code refactoring
 - **bugfix/memory-leak**: Memory leak fixes
-- **hotfix/security-patch**: Security updates
-- **release/v2.0**: Release preparation
-- **gh-pages**: Documentation site (orphan)
+- **hotfix/security-patch**: Security updates (MERGED)
+- **release/v2.0**: Release preparation branch
+- **gh-pages**: Documentation site (orphan branch - no common history)
 
 ## Contributing
 
