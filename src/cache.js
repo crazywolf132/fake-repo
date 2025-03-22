@@ -2,9 +2,12 @@
 const cache = new Map();
 
 function setCache(key, value, ttl = 3600) {
+    // Enhanced with logging
+    console.log(`Setting cache for key: ${key}`);
     cache.set(key, {
         value,
-        expires: Date.now() + (ttl * 1000)
+        expires: Date.now() + (ttl * 1000),
+        timestamp: new Date().toISOString()
     });
 }
 
