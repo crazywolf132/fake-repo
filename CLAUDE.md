@@ -49,6 +49,21 @@ Note: The test in `tests/app.test.js` expects "Hello World!" but the app returns
 - **Database Config**: MongoDB configuration present but not implemented
 - **Security**: Basic security headers via Helmet middleware
 
+## Advanced Git Features
+
+### New Test Scenarios Added
+- **Empty Commits**: For edge case testing
+- **Cherry-picked Commits**: With -x flag showing origin
+- **Revert Commits**: Clean revert demonstrating history
+- **Octopus Merge**: Multi-parent merge with 3+ branches
+- **Git LFS**: Large file storage tracking (*.psd, *.zip, *.mov)
+- **Symbolic Links**: Including broken links for testing
+- **File Permissions**: Executable bit changes
+- **Unicode Branch Names**: Testing special characters and emojis
+- **Very Long Branch Names**: Testing UI display limits
+- **Git Hooks**: Pre-commit and commit-msg hooks
+- **Submodules**: Simulated submodule structure
+
 ## Git Branch Map
 
 ### Branch Relationship Tree
