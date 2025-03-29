@@ -9,12 +9,13 @@ This repository serves as a testing ground for developers building git-related t
 ## Repository Features
 
 ### Branch Structure
-- **14 branches** with different states and relationships
-- Feature branches (`feature/*`)
-- Bugfix branches (`bugfix/*`)
+- **21 branches** with different states and relationships
+- Feature branches (`feature/*`) including stacked branches
+- Bugfix branches (`bugfix/*`) including unicode names
 - Hotfix branches (`hotfix/*`)
 - Release branches (`release/*`)
 - Orphan branch (`gh-pages`)
+- Special test branches (unicode, long names, octopus merge)
 
 ### Commit History
 - **Multiple authors**: 7 different contributors
@@ -25,7 +26,7 @@ This repository serves as a testing ground for developers building git-related t
 ### Complex Scenarios
 
 #### 1. Merge Conflicts
-- `src/utils.js` has different implementations across branches
+- `src/helpers.js` has different implementations across branches
 - Date formatting conflicts between `feature/user-auth` and `feature/database`
 
 #### 2. File Operations
@@ -33,16 +34,25 @@ This repository serves as a testing ground for developers building git-related t
 - **Moved files**: `database.js` → `core/database.js`
 - **Binary files**: PNG image in `assets/`
 - **Large JSON files**: Sample data in `data/`
+- **Symbolic links**: Including broken links for edge case testing
+- **File permissions**: Executable scripts with permission changes
 
 #### 3. Branch Relationships
 - Branches ahead/behind main
-- Nested branches (branches created from other branches)
+- Stacked branches (branches created from other branches)
 - Divergent histories
 - Cross-branch merges
+- **Octopus merge**: 3-parent merge commit
 
-#### 4. Tags
-- Annotated tags: `v1.0.0`, `v1.1.0`
-- Lightweight tags: `v0.9.0`, `v1.2.0-beta`
+#### 4. Advanced Git Features
+- **Tags**: Annotated (`v1.0.0`, `v1.1.0`) and lightweight (`v0.9.0`, `v1.2.0-beta`)
+- **Git LFS**: Large file storage for `*.psd`, `*.zip`, `*.mov` files
+- **Cherry-picked commits**: With `-x` flag showing origin
+- **Revert commits**: Demonstrating revert history
+- **Empty commits**: Testing edge cases
+- **Git hooks**: Pre-commit and commit-msg hooks
+- **Submodules**: Simulated submodule structure
+- **Unicode branch names**: Testing special characters and emojis
 
 ## How to Use This Repository
 
@@ -120,30 +130,38 @@ main (current)
 │
 ├─ Already Merged:
 │  ├─ hotfix/security-patch → merged at commit 2848c2c
-│  └─ feature/database → partially merged at db86cf6
+│  ├─ feature/database → partially merged at db86cf6  
+│  ├─ feature/octopus-1 ┐
+│  ├─ feature/octopus-2 ├─ Octopus merge at 321b498
+│  └─ feature/octopus-3 ┘
 │
 └─ Active Branches:
    │
-   ├─ From early history (main~10):
+   ├─ From early history (Initial commit):
    │  ├─ feature/user-auth
    │  │  └─ feature/user-auth-api [STACKED]
    │  └─ feature/refactor-old
    │
-   ├─ From feature/database merge (main~6):
+   ├─ From feature/database merge point:
    │  ├─ feature/database (continues after merge)
    │  │  └─ feature/database-models [STACKED]
    │  └─ bugfix/memory-leak
    │
-   ├─ From after hotfix (main~4):
-   │  └─ feature/experimental
+   ├─ From after hotfix merge:
+   │  └─ feature/experimental (has cherry-picked commit)
    │
-   ├─ From commit 4fbcc2f (main~3):
+   ├─ From main history:
    │  ├─ feature/api-v2 (includes merge from release/v2.0)
-   │  │  └─ feature/api-v2-routes [STACKED]
+   │  ├─ feature/api-v2-routes 
    │  └─ release/v2.0
    │
-   └─ From recent main:
-      └─ feature/long-running
+   ├─ Recent branches:
+   │  └─ feature/long-running
+   │
+   └─ Special Test Branches:
+      ├─ feature/🚀-unicode-测试-émojis
+      ├─ bugfix/пофиксить-баг-🐛
+      └─ feature/this-is-an-extremely-long-branch-name-that-tests-the-limits...
 
 ORPHAN: gh-pages (no common ancestor with main)
 ```
@@ -156,7 +174,7 @@ ORPHAN: gh-pages (no common ancestor with main)
 - **feature/database**: Database integration (partially merged, continues development)
 - **feature/database-models**: Mongoose models [STACKED on feature/database]
 - **feature/api-v2**: Version 2 API development (includes release/v2.0 merge)
-- **feature/api-v2-routes**: API v2 routes [STACKED on feature/api-v2]
+- **feature/api-v2-routes**: API v2 routes implementation
 - **feature/experimental**: Experimental caching features
 - **feature/long-running**: Performance metrics implementation
 - **feature/refactor-old**: Legacy code refactoring
@@ -164,6 +182,56 @@ ORPHAN: gh-pages (no common ancestor with main)
 - **hotfix/security-patch**: Security updates (MERGED)
 - **release/v2.0**: Release preparation branch
 - **gh-pages**: Documentation site (orphan branch - no common history)
+- **feature/octopus-1,2,3**: Branches for octopus merge testing (MERGED)
+- **feature/🚀-unicode-测试-émojis**: Unicode branch name testing
+- **bugfix/пофиксить-баг-🐛**: Cyrillic unicode branch testing
+- **feature/this-is-an-extremely-long-branch-name...**: Testing branch name length limits
+
+## Testing Pull Requests
+
+To test PR functionality with this repository, use the following base and compare branch combinations. These maintain the intended structure and provide realistic PR scenarios:
+
+### Recommended PR Scenarios
+
+1. **Stacked Feature Development**
+   - Base: `feature/user-auth` → Compare: `feature/user-auth-api`
+   - Base: `feature/database` → Compare: `feature/database-models`
+   - Tests: Stacked PR workflows, dependent changes
+
+2. **Feature to Main**
+   - Base: `main` → Compare: `feature/experimental`
+   - Base: `main` → Compare: `feature/long-running`
+   - Base: `main` → Compare: `bugfix/memory-leak`
+   - Tests: Standard feature integration
+
+3. **Release Management**
+   - Base: `release/v2.0` → Compare: `feature/api-v2`
+   - Base: `main` → Compare: `release/v2.0`
+   - Tests: Release branch workflows, version management
+
+4. **Cross-Feature Integration**
+   - Base: `feature/api-v2` → Compare: `feature/api-v2-routes`
+   - Tests: Feature branch integration before main
+
+5. **Legacy Code Updates**
+   - Base: `main` → Compare: `feature/refactor-old`
+   - Tests: Long-running refactoring PRs
+
+6. **Unicode/Special Characters**
+   - Base: `main` → Compare: `feature/🚀-unicode-测试-émojis`
+   - Base: `main` → Compare: `bugfix/пофиксить-баг-🐛`
+   - Tests: Unicode handling in PR titles/branches
+
+7. **Conflict Scenarios**
+   - Base: `feature/user-auth` → Compare: `feature/database`
+   - Tests: Merge conflicts in PRs (both modify helpers.js differently)
+
+### PR Testing Tips
+
+- The repository includes pre-commit hooks that may affect PR commits
+- Some branches have cherry-picked commits that will show in PR history
+- The octopus merge branches demonstrate complex merge scenarios
+- Use the long branch name to test UI display limits in PR tools
 
 ## Contributing
 
